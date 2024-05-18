@@ -7,10 +7,10 @@ myVideo.muted = true;
 var peer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
-    port: '443'
+    port: '9001'
 });
 
-let myVideoStream;
+let myVideoStream, loggedUserID;
 
 navigator.mediaDevices.getUserMedia({
     video: true,
@@ -36,6 +36,7 @@ navigator.mediaDevices.getUserMedia({
 
 peer.on('open', id => {
     // console.log(id);
+    loggedUserID = id;
     socket.emit('join-room', ROOM_ID, id);
 })
 
@@ -109,7 +110,7 @@ socket.on('createMessage', message => {
     let li = document.createElement('li');
     li.classList.add('message');
     li.classList.add('user__message');
-    li.innerHTML = '<span class="message__header">You</span><p class="message__body"><span>' + message + '</span></p>';
+    li.innerHTML = '<span class="message__header">' + '</span><p class="message__body"><span>' + message + '</span></p>';
     ul.appendChild(li);
     scrollToBottom();
 });
