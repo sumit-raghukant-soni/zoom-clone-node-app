@@ -14,7 +14,7 @@ app.use(express.static('public'));
 
 // app.use('/peerjs', peerServer);
 
-app.get('/', (req, res) => {
+app.use('/', (req, res) => {
     res.json({ message : "Server is working" });
     // res.redirect(`/${ uuidv4() }`);
 });
