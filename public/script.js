@@ -1,10 +1,12 @@
-const socket = io('/');
+const socket = io('/', {
+    transports: ['websocket', 'polling']
+});
 
 const videoGrid = document.getElementById('video-grid');
 const myVideo = document.createElement('video');
 myVideo.muted = true;
 
-var peer = new Peer(undefined, {
+const peer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
     port: location.port || (location.protocol === 'https:' ? 443 : 80)
@@ -60,7 +62,7 @@ const scrollToBottom = () => {
 
 const muteUnmute = () => {
     const enabled = myVideoStream.getAudioTracks()[0].enabled;
-    if(enabled){
+    if (enabled) {
         myVideoStream.getAudioTracks()[0].enabled = false;
         setUnmuteButton();
     } else {
@@ -89,7 +91,7 @@ const setUnmuteButton = () => {
 let text = document.getElementById('chat_message');
 
 document.addEventListener('keydown', (e) => {
-    if(e.key == 'Enter' && text.value.length != 0) {
+    if (e.key == 'Enter' && text.value.length != 0) {
         socket.emit('message', text.value);
         text.value = '';
     }
@@ -107,7 +109,7 @@ socket.on('createMessage', message => {
 
 const playStop = () => {
     let enabled = myVideoStream.getVideoTracks()[0].enabled;
-    if(enabled){
+    if (enabled) {
         myVideoStream.getVideoTracks()[0].enabled = false;
         setPlayVideo();
     } else {

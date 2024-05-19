@@ -8,9 +8,13 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server);
+const io = socketIO(server, {
+    path: '/socket.io',
+    transports: ['websocket', 'polling']
+});
 const peerServer = ExpressPeerServer(server, {
-    debug: true
+    debug: true,
+    path: '/peerjs'
 });
 
 app.set('view engine', 'ejs');
