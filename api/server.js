@@ -8,17 +8,19 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
+
 const io = socketIO(server, {
     path: '/socket.io',
-    transports: ['websocket', 'polling']
+    transports: ['websocket', 'polling'],
 });
+
 const peerServer = ExpressPeerServer(server, {
     debug: true,
     path: '/peerjs'
 });
 
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, '../views')); // Ensure the views folder is correctly set
+app.set('views', path.join(__dirname, '../views'));
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/peerjs', peerServer);
@@ -31,12 +33,12 @@ app.get('/:room', (req, res) => {
     res.render('room', { roomId: req.params.room });
 });
 
-io.on('connection', socket => {
+io.on('connection', (socket) => {
     socket.on('join-room', (roomId, userId) => {
         socket.join(roomId);
         socket.to(roomId).emit('user-connected', userId);
 
-        socket.on('message', message => {
+        socket.on('message', (message) => {
             io.to(roomId).emit('createMessage', message);
         });
     });

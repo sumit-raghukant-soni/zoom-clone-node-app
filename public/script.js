@@ -1,5 +1,6 @@
 const socket = io('/', {
-    transports: ['websocket', 'polling']
+    transports: ['websocket', 'polling'],
+    path: '/socket.io'
 });
 
 const videoGrid = document.getElementById('video-grid');
@@ -45,7 +46,7 @@ const connectToNewUser = (userId, stream) => {
     call.on('stream', userVideoStream => {
         addVideoStream(video, userVideoStream);
     });
-}
+};
 
 const addVideoStream = (video, stream) => {
     video.srcObject = stream;
@@ -53,12 +54,12 @@ const addVideoStream = (video, stream) => {
         video.play();
     });
     videoGrid.append(video);
-}
+};
 
 const scrollToBottom = () => {
     let d = document.getElementsByClassName('main__chat__window')[0];
     d.scrollTop = d.scrollHeight;
-}
+};
 
 const muteUnmute = () => {
     const enabled = myVideoStream.getAudioTracks()[0].enabled;
@@ -69,7 +70,7 @@ const muteUnmute = () => {
         setMuteButton();
         myVideoStream.getAudioTracks()[0].enabled = true;
     }
-}
+};
 
 const setMuteButton = () => {
     const html = `
@@ -77,7 +78,7 @@ const setMuteButton = () => {
     <span>Mute</span>
     `;
     document.querySelector('.main__mute__button').innerHTML = html;
-}
+};
 
 const setUnmuteButton = () => {
     const html = `
@@ -85,7 +86,7 @@ const setUnmuteButton = () => {
     <span class="unmute">Unmute</span>
     `;
     document.querySelector('.main__mute__button').innerHTML = html;
-}
+};
 
 // Message
 let text = document.getElementById('chat_message');
@@ -102,7 +103,7 @@ socket.on('createMessage', message => {
     let li = document.createElement('li');
     li.classList.add('message');
     li.classList.add('user__message');
-    li.innerHTML = '<span class="message__header">' + 'You' + '</span><p class="message__body"><span>' + message + '</span></p>';
+    li.innerHTML = '<span class="message__header">You</span><p class="message__body"><span>' + message + '</span></p>';
     ul.appendChild(li);
     scrollToBottom();
 });
@@ -116,7 +117,7 @@ const playStop = () => {
         setStopVideo();
         myVideoStream.getVideoTracks()[0].enabled = true;
     }
-}
+};
 
 const setStopVideo = () => {
     const html = `
@@ -124,7 +125,7 @@ const setStopVideo = () => {
     <span>Stop Video</span>
     `;
     document.querySelector('.main__video__button').innerHTML = html;
-}
+};
 
 const setPlayVideo = () => {
     const html = `
@@ -132,4 +133,4 @@ const setPlayVideo = () => {
     <span class="stop">Play Video</span>
     `;
     document.querySelector('.main__video__button').innerHTML = html;
-}
+};
