@@ -10,18 +10,17 @@ const peerServer = ExpressPeerServer(server, {
 });
 
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 app.use(express.static('public'));
 
 app.use('/peerjs', peerServer);
 
 app.get('/', (req, res) => {
     // res.json({ message : "Server is working" });
-    alert("reached main page");
     res.redirect(`/${ uuidv4() }`);
 });
 
 app.get('/:room', (req, res) => {
-    alert("reached room page with ", req.params.room);
     res.render('room', { roomId: req.params.room });
 })
 
