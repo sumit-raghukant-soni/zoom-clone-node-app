@@ -1,5 +1,5 @@
-const express = require('express');
-const app = express();
+// const express = require('express');
+// const app = express();
 // const { v4: uuidv4 } = require('uuid');
 
 // const server = require('http').Server(app);
@@ -9,15 +9,15 @@ const app = express();
 //     debug: true
 // });
 
-app.set('view engine', 'ejs');
-app.use(express.static('public'));
+// app.set('view engine', 'ejs');
+// app.use(express.static('public'));
 
 // app.use('/peerjs', peerServer);
 
-app.use('/', (req, res) => {
-    res.json({ message : "Server is working" });
-    // res.redirect(`/${ uuidv4() }`);
-});
+// app.get('/', (req, res) => {
+//     res.json({ message : "Server is working" });
+//     // res.redirect(`/${ uuidv4() }`);
+// });
 
 // app.get('/:room', (req, res) => {
 //     res.render('room', { roomId: req.params.room });
@@ -37,4 +37,19 @@ app.use('/', (req, res) => {
 //     })
 // })
 
-server.listen(3030);
+// server.listen(3030);
+
+
+
+import express from "express";
+
+const app = express();
+const port = 9000;
+
+app.use("/", (req, res) => {
+    res.json({ message : "Server is working" });
+})
+
+app.listen(port, () => {
+    console.log(`Starting server on Port ${port}`);
+});
