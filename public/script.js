@@ -7,7 +7,7 @@ myVideo.muted = true;
 var peer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
-    port: '9001'
+    port: '3030'
 });
 
 let myVideoStream, loggedUserID;
@@ -110,7 +110,7 @@ socket.on('createMessage', message => {
     let li = document.createElement('li');
     li.classList.add('message');
     li.classList.add('user__message');
-    li.innerHTML = '<span class="message__header">' + '</span><p class="message__body"><span>' + message + '</span></p>';
+    li.innerHTML = '<span class="message__header">' + 'You' + '</span><p class="message__body"><span>' + message + '</span></p>';
     ul.appendChild(li);
     scrollToBottom();
 });
