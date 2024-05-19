@@ -16,10 +16,12 @@ app.use('/peerjs', peerServer);
 
 app.get('/', (req, res) => {
     // res.json({ message : "Server is working" });
+    alert("reached main page");
     res.redirect(`/${ uuidv4() }`);
 });
 
 app.get('/:room', (req, res) => {
+    alert("reached room page with ", req.params.room);
     res.render('room', { roomId: req.params.room });
 })
 
