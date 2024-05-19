@@ -7,7 +7,7 @@ myVideo.muted = true;
 var peer = new Peer(undefined, {
     path: '/peerjs',
     host: '/',
-    port: '3030'
+    port: location.port || (location.protocol === 'https:' ? 443 : 80)
 });
 
 let myVideoStream, loggedUserID;
@@ -28,27 +28,21 @@ navigator.mediaDevices.getUserMedia({
         });
     });
     socket.on('user-connected', userId => {
-        // console.log('New User', userId);
-        // connectToNewUser(userId, stream);
-        setTimeout(connectToNewUser,1000,userId,stream);
+        setTimeout(connectToNewUser, 1000, userId, stream);
     });
-})
+});
 
 peer.on('open', id => {
-    // console.log(id);
     loggedUserID = id;
     socket.emit('join-room', ROOM_ID, id);
-})
-
-
+});
 
 const connectToNewUser = (userId, stream) => {
     const call = peer.call(userId, stream);
     const video = document.createElement('video');
     call.on('stream', userVideoStream => {
-        // console.log("adding new user video");
         addVideoStream(video, userVideoStream);
-    })
+    });
 }
 
 const addVideoStream = (video, stream) => {
@@ -69,8 +63,7 @@ const muteUnmute = () => {
     if(enabled){
         myVideoStream.getAudioTracks()[0].enabled = false;
         setUnmuteButton();
-    }
-    else{
+    } else {
         setMuteButton();
         myVideoStream.getAudioTracks()[0].enabled = true;
     }
@@ -96,16 +89,13 @@ const setUnmuteButton = () => {
 let text = document.getElementById('chat_message');
 
 document.addEventListener('keydown', (e) => {
-    // console.log(e.key == 'Enter');
     if(e.key == 'Enter' && text.value.length != 0) {
-        // console.log(text.value);
         socket.emit('message', text.value);
         text.value = '';
     }
-})
+});
 
 socket.on('createMessage', message => {
-    // console.log('This is the text message convyed', message);
     let ul = document.getElementsByClassName('messages')[0];
     let li = document.createElement('li');
     li.classList.add('message');
@@ -115,15 +105,12 @@ socket.on('createMessage', message => {
     scrollToBottom();
 });
 
-
 const playStop = () => {
-    // console.log('object');
     let enabled = myVideoStream.getVideoTracks()[0].enabled;
     if(enabled){
         myVideoStream.getVideoTracks()[0].enabled = false;
         setPlayVideo();
-    }
-    else{
+    } else {
         setStopVideo();
         myVideoStream.getVideoTracks()[0].enabled = true;
     }
@@ -134,7 +121,6 @@ const setStopVideo = () => {
     <i class="fas fa-video"></i>
     <span>Stop Video</span>
     `;
-
     document.querySelector('.main__video__button').innerHTML = html;
 }
 
@@ -143,6 +129,5 @@ const setPlayVideo = () => {
     <i class="stop fas fa-video-slash"></i>
     <span class="stop">Play Video</span>
     `;
-
     document.querySelector('.main__video__button').innerHTML = html;
 }
